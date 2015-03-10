@@ -35,6 +35,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.management.ObjectName;
 
+import junit.framework.TestCase;
+
 import org.jboss.ws.api.monitoring.Record;
 import org.jboss.ws.api.monitoring.RecordProcessor;
 import org.jboss.ws.common.management.DefaultEndpointRegistry;
@@ -50,8 +52,6 @@ import org.jboss.wsf.spi.management.EndpointMetrics;
 import org.jboss.wsf.spi.management.EndpointRegistry;
 import org.jboss.wsf.spi.metadata.config.EndpointConfig;
 import org.jboss.wsf.spi.security.SecurityDomainContext;
-
-import junit.framework.TestCase;
 
 /**
  * Test the DefaultEndpointRegistry
@@ -417,6 +417,30 @@ public class DefaultEndpointRegistryTestCase extends TestCase
             // TODO Auto-generated method stub
             
          }
+
+		@Override
+		public String getRuntimeProperty(String key) {
+			return null;
+		}
+
+		@Override
+		public void setRuntimeProperty(String key, String value) {			
+		}
+
+		@Override
+		public void removeRuntimeProperty(String key) {			
+		}
+
+		@Override
+		public Map<String, String> getRuntimeProperties() {
+			return null;
+		}
+
+		@Override
+		public Map<String, String> getAllConfigsMap() {
+			// TODO Auto-generated method stub
+			return null;
+		}
       };
    }
 }
