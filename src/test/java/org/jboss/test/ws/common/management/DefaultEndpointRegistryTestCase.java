@@ -441,6 +441,13 @@ public class DefaultEndpointRegistryTestCase extends TestCase
 			// TODO Auto-generated method stub
 			return null;
 		}
+
+      @Override
+      public Set<String> getRuntimeConfigFlags()
+      {
+         // TODO Auto-generated method stub
+         return null;
+      }
       };
    }
 }
