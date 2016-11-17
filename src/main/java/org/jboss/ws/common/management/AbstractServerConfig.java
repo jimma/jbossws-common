@@ -134,7 +134,7 @@ public abstract class AbstractServerConfig implements AbstractServerConfigMBean,
          if (MANAGEMENT_LOGGER.isDebugEnabled()) MANAGEMENT_LOGGER.usingLocalHostWebServicesHost(localHost.getHostName());
          host = localHost.getHostName();
       }
-      final String wsh = toIPv6URLFormat("127.0.0.1".equals(host) ? "localhost" : host); // TCK workaround
+      final String wsh = toIPv6URLFormat(host);
       synchronized (webServiceHostLock)
       {
          if (uch != null) {
