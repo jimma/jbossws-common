@@ -23,8 +23,11 @@ import java.io.InputStream;
 import java.net.URL;
 import java.security.SecureClassLoader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 /**
  * A delegate classloader
@@ -37,6 +40,15 @@ public class DelegateClassLoader extends SecureClassLoader
    private final ClassLoader delegate;
 
    private final ClassLoader parent;
+   private static Set<String> skipSps = new HashSet<String>(Arrays. asList(
+           "META-INF/services/javax.xml.parsers.DocumentBuilderFactory",
+           "META-INF/services/javax.xml.parsers.SAXParserFactory",
+           "META-INF/services/javax.xml.validation.SchemaFactory",
+           "META-INF/services/javax.xml.stream.XMLEventFactory",
+           "META-INF/services/javax.xml.datatype.DatatypeFactory",
+           "META-INF/services/javax.xml.transform.TransformerFactory",
+           "META-INF/services/javax.xml.xpath.XPathFactory"
+   ));
 
    public DelegateClassLoader(final ClassLoader delegate, final ClassLoader parent)
    {
@@ -72,7 +84,7 @@ public class DelegateClassLoader extends SecureClassLoader
       {
          url = parent.getResource(name);
       }
-      return (url == null) ? delegate.getResource(name) : url;
+      return (url == null && !skipSps.contains(name)) ? delegate.getResource(name) : url;
    }
 
    /** {@inheritDoc} */
@@ -81,7 +93,9 @@ public class DelegateClassLoader extends SecureClassLoader
    {
       final ArrayList<Enumeration<URL>> foundResources = new ArrayList<Enumeration<URL>>();
 
-      foundResources.add(delegate.getResources(name));
+      if (!skipSps.contains(name)) {
+         foundResources.add(delegate.getResources(name));
+      }
       if (parent != null)
       {
          foundResources.add(parent.getResources(name));
@@ -129,8 +143,8 @@ public class DelegateClassLoader extends SecureClassLoader
       InputStream is = null;
       if (parent != null)
       {
-        is = parent.getResourceAsStream(name);
+         is = parent.getResourceAsStream(name);
       }
-      return (is == null) ? delegate.getResourceAsStream(name) : is;
+      return (is == null && !skipSps.contains(name)) ? delegate.getResourceAsStream(name) : is;
    }
 }
